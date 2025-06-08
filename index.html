@@ -1,0 +1,15 @@
+<button id="btnNoti">Activar notificaciones</button>
+
+<script>
+  const publicVapidKey = 'TU_PUBLIC_VAPID_KEY_BASE64';
+
+  document.getElementById('btnNoti').addEventListener('click', async () => {
+    const permiso = await Notification.requestPermission();
+    if (permiso === 'granted') {
+      await registrarYSuscribir(publicVapidKey);
+      alert('Notificaciones activadas, causa!');
+    } else {
+      alert('No se activaron las notificaciones');
+    }
+  });
+</script>
