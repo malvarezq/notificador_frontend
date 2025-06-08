@@ -53,7 +53,7 @@ document.getElementById('btnNoti').addEventListener('click', async () => {
           applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
         });
 
-        await fetch('https://TU_BACKEND/registrar', {
+        await fetch(backendURL, {
           method: 'POST',
           body: JSON.stringify(subscription),
           headers: {
