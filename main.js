@@ -17,7 +17,7 @@ async function registrarYSuscribir(publicKey) {
   }
 
   try {
-    const sw = await navigator.serviceWorker.register('/sw.js');
+    const sw = await navigator.serviceWorker.register('./sw.js');
     const suscripcion = await sw.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(publicKey),
