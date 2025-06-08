@@ -1,15 +1,19 @@
-<button id="btnNoti">Activar notificaciones</button>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Notificaciones Push</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<script>
-  const publicVapidKey = 'TU_PUBLIC_VAPID_KEY_BASE64';
+  <!-- Evita que se indexe -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+</head>
+<body>
+  <h1>Activa tus notificaciones</h1>
+  <button id="btnNoti">Activar notificaciones</button>
 
-  document.getElementById('btnNoti').addEventListener('click', async () => {
-    const permiso = await Notification.requestPermission();
-    if (permiso === 'granted') {
-      await registrarYSuscribir(publicVapidKey);
-      alert('Notificaciones activadas, causa!');
-    } else {
-      alert('No se activaron las notificaciones');
-    }
-  });
-</script>
+  <!-- Cargar script externo -->
+  <script src="main.js"></script>
+</body>
+</html>
