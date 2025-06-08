@@ -4,7 +4,7 @@ document.getElementById('btnNoti').addEventListener('click', async () => {
   const permiso = await Notification.requestPermission();
   if (permiso === 'granted') {
     await registrarYSuscribir(publicVapidKey);
-    alert('Notificaciones activadas, causa!');
+    alert('Notificaciones activadas, para cortes de agua y luz!');
   } else {
     alert('No se activaron las notificaciones');
   }
