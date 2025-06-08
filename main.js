@@ -20,7 +20,7 @@ document.getElementById('btnNoti').addEventListener('click', async () => {
     return;
   }
 
-  navigator.serviceWorker.register('sw.js').then(async (registration) => {
+  navigator.serviceWorker.register('./sw.js').then(async (registration) => {
     console.log('SW registrado:', registration);
 
     // Esperamos hasta que esté activo
