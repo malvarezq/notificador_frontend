@@ -41,7 +41,7 @@ document.getElementById('btnNoti').addEventListener('click', async () => {
           },
         });
 
-        alert('Notificaciones activadas, causa 😎');
+        alert('Notificaciones activadas 😎');
       } catch (err) {
         console.error('Error al suscribirse:', err);
       }
