@@ -1,0 +1,24 @@
+name: Notificar cortes programados
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 2:00 AM UTC = 9:00 PM Perú
+  workflow_dispatch:     # Permite correrlo manualmente también
+
+jobs:
+  despertar-y-ejecutar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Wake up backend de Render
+        run: |
+          echo "Despertando backend..."
+          curl --retry 3 --retry-delay 5 --fail https://notificador-backend.onrender.com/ || echo "Render aún está arrancando"
+
+      - name: Esperar 2 minutos
+        run: sleep 120
+
+      - name: Llamar a /actualizar-cortes
+        run: |
+          echo "Llamando al endpoint de notificación..."
+          curl --fail https://notificador-backend.onrender.com/actualizar-cortes?token=${{ secrets.SECRET_PHRASE }}"
