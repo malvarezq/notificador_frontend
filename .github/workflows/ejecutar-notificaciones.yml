@@ -2,7 +2,7 @@ name: Notificar cortes programados
 
 on:
   schedule:
-    - cron: '0 2 * * *'  # 2:00 AM UTC = 9:00 PM Perú
+    - cron: '0 1 * * *'  # 2:00 AM UTC = 9:00 PM Perú
   workflow_dispatch:     # Permite correrlo manualmente también
 
 jobs:
