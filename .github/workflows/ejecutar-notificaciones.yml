@@ -21,4 +21,4 @@ jobs:
       - name: Llamar a /actualizar-cortes
         run: |
           echo "Llamando al endpoint de notificación..."
-          curl --fail https://notificador-backend.onrender.com/actualizar-cortes?token=${{ secrets.SECRET_PHRASE }}"
+          curl --fail https://notificador-backend.onrender.com/actualizar-cortes?token=${{ secrets.SECRET_PHRASE }}
