@@ -1,6 +1,34 @@
 const publicVapidKey = 'BP9szhwHSBGWhcAMMp-GjNFjX5Tfe8s2O4gZhaUGm9xkRa3iMSJ0Xuh98tmYlqVDsGyEjMjMeR8u7gg9mXSM_bs';
 const backendURL = 'https://notificador-backend.onrender.com/registrar';
 
+const btn = document.getElementById('btnNoti');
+const statusTxt = document.getElementById('statusTxt');
+
+/* =====================
+   HEALTH CHECK BACKEND
+===================== */
+async function checkBackend() {
+  try {
+    const res = await fetch(backendURL, { method: 'OPTIONS' });
+    if (res.ok) {
+      btn.disabled = false;
+      btn.textContent = 'Activar notificaciones';
+      statusTxt.textContent = 'Servidor disponible 🟢';
+    } else {
+      throw new Error('Backend no OK');
+    }
+  } catch (err) {
+    btn.disabled = true;
+    btn.textContent = 'Servidor no disponible';
+    statusTxt.textContent = 'Backend fuera de línea 🔴';
+  }
+}
+
+checkBackend();
+
+/* =====================
+   UTIL
+===================== */
 function urlBase64ToUint8Array(base64String) {
   const padding = '='.repeat((4 - base64String.length % 4) % 4);
   const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
@@ -8,10 +36,13 @@ function urlBase64ToUint8Array(base64String) {
   return Uint8Array.from([...raw].map(c => c.charCodeAt(0)));
 }
 
-document.getElementById('btnNoti').addEventListener('click', async () => {
+/* =====================
+   CLICK BOTÓN
+===================== */
+btn.addEventListener('click', async () => {
   const permiso = await Notification.requestPermission();
   if (permiso !== 'granted') {
-    alert('Permiso denegado');
+    alert('Permiso denegado causa 😢');
     return;
   }
 
@@ -20,51 +51,31 @@ document.getElementById('btnNoti').addEventListener('click', async () => {
     return;
   }
 
-  navigator.serviceWorker.register('./sw.js').then(async (registration) => {
-    console.log('SW registrado:', registration);
+  try {
+    const registration = await navigator.serviceWorker.register('./sw.js');
 
-    // Esperamos hasta que esté activo
-    if (registration.active) {
-      try {
-        const subscription = await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
-        });
+    const reg = registration.active
+      ? registration
+      : await navigator.serviceWorker.ready;
 
-        console.log('Subscripción exitosa:', subscription);
+    const subscription = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+    });
 
-        await fetch(backendURL, {
-          method: 'POST',
-          body: JSON.stringify(subscription),
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        });
+    const res = await fetch(backendURL, {
+      method: 'POST',
+      body: JSON.stringify(subscription),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    });
 
-        alert('Notificaciones activadas 😎');
-      } catch (err) {
-        console.error('Error al suscribirse:', err);
-      }
-    } else {
-      // Esperamos activación si aún no está activo
-      navigator.serviceWorker.ready.then(async (reg) => {
-        const subscription = await reg.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
-        });
+    if (!res.ok) throw new Error('Error registrando suscripción');
 
-        await fetch(backendURL, {
-          method: 'POST',
-          body: JSON.stringify(subscription),
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        });
-
-        alert('Notificaciones activadas 🥳');
-      });
-    }
-  }).catch((err) => {
-    console.error('Error al registrar SW:', err);
-  });
+    alert('Notificaciones activadas 😎🔥');
+  } catch (err) {
+    console.error(err);
+    alert('Algo salió mal causa, revisa consola');
+  }
 });
