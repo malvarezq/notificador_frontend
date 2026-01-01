@@ -1,5 +1,6 @@
 const publicVapidKey = 'BP9szhwHSBGWhcAMMp-GjNFjX5Tfe8s2O4gZhaUGm9xkRa3iMSJ0Xuh98tmYlqVDsGyEjMjMeR8u7gg9mXSM_bs';
 const backendURL = 'https://notificador-backend.onrender.com/registrar';
+const checkBackendAvailability = "https://notificador-backend.onrender.com/";
 
 const btn = document.getElementById('btnNoti');
 const statusTxt = document.getElementById('statusTxt');
@@ -9,7 +10,7 @@ const statusTxt = document.getElementById('statusTxt');
 ===================== */
 async function checkBackend() {
   try {
-    const res = await fetch(backendURL, { method: 'OPTIONS' });
+    const res = await fetch(checkBackendAvailability, { method: 'OPTIONS' });
     if (res.ok) {
       btn.disabled = false;
       btn.textContent = 'Activar notificaciones';
