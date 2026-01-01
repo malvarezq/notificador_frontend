@@ -10,7 +10,7 @@ const statusTxt = document.getElementById('statusTxt');
 ===================== */
 async function checkBackend() {
   try {
-    const res = await fetch(checkBackendAvailability, { method: 'OPTIONS' });
+    const res = await fetch(checkBackendAvailability, { method: 'GET' });
     if (res.ok) {
       btn.disabled = false;
       btn.textContent = 'Activar notificaciones';
