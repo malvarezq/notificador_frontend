@@ -6,10 +6,120 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <meta name="googlebot" content="noindex, nofollow">
+
+  <style>
+    /* =====================
+       RESET BÁSICO
+    ====================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #0b0f14;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    /* =====================
+       FONDO ESCARCHA
+    ====================== */
+    body::before,
+    body::after {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08), transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,0.06), transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.04), transparent 50%);
+      animation: escarcha 18s linear infinite;
+    }
+
+    body::after {
+      animation-duration: 28s;
+      animation-direction: reverse;
+    }
+
+    @keyframes escarcha {
+      from {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      to {
+        transform: translate(20%, 10%) rotate(360deg);
+      }
+    }
+
+    /* =====================
+       CONTENEDOR
+    ====================== */
+    .card {
+      position: relative;
+      z-index: 1;
+      background: rgba(15, 20, 30, 0.85);
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      backdrop-filter: blur(6px);
+    }
+
+    .card h1 {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      opacity: 0.9;
+    }
+
+    /* =====================
+       BOTÓN
+    ====================== */
+    #btnNoti {
+      background: #16a34a;
+      color: #ffffff;
+      border: none;
+      padding: 0.9rem 1.6rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-weight: 600;
+    }
+
+    #btnNoti:hover:enabled {
+      background: #22c55e;
+      transform: translateY(-1px);
+    }
+
+    #btnNoti:disabled {
+      background: #1f2937;
+      color: #9ca3af;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .status {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+  </style>
 </head>
+
 <body>
-  <button id="btnNoti">Activar notificaciones</button>
+  <div class="card">
+    <h1>Notificador de cortes de servicios</h1>
+    <button id="btnNoti" disabled>Conectando al servidor...</button>
+    <div class="status" id="statusTxt">Verificando backend</div>
+  </div>
+
   <script src="main.js"></script>
-  <script src="sw.js"></script>
 </body>
 </html>
